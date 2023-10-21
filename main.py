@@ -29,6 +29,15 @@ class Users(db.Model):
   def __repr__(self):
     return '<Name %r>' % self.name
 
+with app.app_context():
+    db.create_all()
+
+#To push a context manually, using a plain python shell.
+#$ python
+#>>> from project import app, db
+#>>> app.app_context().push()
+#>>> db.create_all()
+
 # Create a form class
 class UserForm(FlaskForm):
     name = StringField('Name:', validators=[DataRequired()])
@@ -52,8 +61,20 @@ class NameForm(FlaskForm):
 
 @app.route('/user/add', methods=["GET", "POST"])
 def add_user():
+  name = None
   form = UserForm()
-  return render_template('add_user.html', form=form)
+  if form.validate_on_submit():
+    user = Users.query.filter_by(email=form.email.data).first()
+    if user is None:
+      user = Users(name=form.name.data, email=form.email.data)
+      db.session.add(user)
+      db.session.commit()
+    name = form.name.data
+    form.name.data = ''
+    form.email.data = ''
+    flash("User Added Successfully")
+  our_users = Users.query.order_by(Users.date_added)
+  return render_template('add_user.html', form=form, name=name, our_users=our_users)
 
 # Create a route decorator
 @app.route('/')
@@ -94,4 +115,4 @@ def name():
 
 # Run the Flask App
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', debug=True)
+  app.run(host='127.0.0.1', port=5000, debug=True)
