@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+  <html>
+    <head>
+    <title>Page Title</title>
+    </head>
+    <body>
+    
+      <!-- passed a name to the template -->
+      <h1>Hello {{ first_name }}</h1>
+     
+      <!-- Jinja disables html by default -->
+      <p>{{ stuff }}</p>
+     
+      <!-- striptags removes html tags. Prevents anyone from injecting html code-->
+      <p>{{ stuff|striptags }}</p>
+     
+      <!-- safe allows the html code to be rendered -->
+      <p>{{ stuff|safe }}</p>
+      
+      <!-- title capitalizes the first letter of each word -->
+      <p>{{ stuff|striptags|title }}</p>
+    
+      <!-- passed a list variable called pizza -->
+      <h3>Favorite Pizza</h3>
+      <!-- typical for loop. for each item in list, do something -->
+      {% for topping in pizza %}
+        {{ topping }}<br>
+      {% endfor %}
+    
+      <!-- call specific items from the list by index -->
+      <br><br>
+      {{ pizza.0 }}
+      <br><br>
+      {{ pizza.1 }}
+      <br><br>
+      {{ pizza.2 }}
+      <br><br>
+      {{ pizza.3 }}
+      <br><br>
+      {{ pizza.3 + 15 }}<br><br> <!-- can perform math operations on lists -->
+    
+      <!-- for loop with internal if statement-->
+      {% for topping in pizza %}
+        {% if topping == 10 %}
+          {{ topping + 90 }}<br>
+        {% else %}
+          {{ topping }}<br>
+        {% endif %}
+      {% endfor %}
+    
+    </body>
+  </html>
+{% endblock %}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+  <html>
+    <head>
+      <title>Page Title</title>
+    </head>
+    
+    <body>
+  
+      <h1>Hello {{ name|title }}</h1>
+      <h1>Hello {{ name|capitalize }}</h1>
+      <h1>Hello {{ name|upper }}</h1>
+      <h1>Hello {{ name|lower }}</h1>
+    
+    </body>
+  </html>
+{% endblock %}
